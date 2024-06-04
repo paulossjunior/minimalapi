@@ -1,0 +1,49 @@
+name: SonarQube Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarQubeScan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0.x'  # Altere para a versão do .NET que você está usando
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+
+      - name: Install ReportGenerator global tool
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build and test
+        run: |
+          dotnet build
+          dotnet test --collect:"XPlat Code Coverage"
+
+      - name: Run SonarQube Scan
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin /k:"paulossjunior_minimalapi" /o:"paulossjunior-github" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          dotnet build
+          dotnet test
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

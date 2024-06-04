@@ -1,0 +1,15 @@
+﻿@MinimalAPI_HostAddress = https://localhost:7110
+
+POST {{MinimalAPI_HostAddress}}/todoitems
+Content-Type: application/json
+
+{
+  "name":"walk dog",
+  "isComplete":true
+}
+
+###
+
+GET {{MinimalAPI_HostAddress}}/todoitems
+
+###

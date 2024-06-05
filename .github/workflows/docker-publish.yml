@@ -29,8 +29,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/minimalapi:latest
-            ghcr.io/${{ github.repository }}/minimalapi:${{ github.sha }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
 
       - name: Logout from GitHub Container Registry
         run: docker logout ghcr.io

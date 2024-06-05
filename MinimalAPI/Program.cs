@@ -10,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
 
+//testando o ci/cd/sonar
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

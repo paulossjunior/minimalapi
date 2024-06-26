@@ -17,6 +17,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.MapGet("/", () => "Hello World!");
 
 var todoItems = app.MapGroup("/todoitems");
 
